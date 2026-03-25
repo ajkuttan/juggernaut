@@ -1,579 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juggernaut | South Indian Flavours</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@400;700&family=Hind+Madurai:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Define the custom font families */
-        body {
-            font-family: 'Hind Madurai', sans-serif;
-            background-color: #FFF8E1; /* A warm, parchment-like off-white */
-            color: #4A2E2A; /* Deep brown, like coffee decoction */
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Arima', cursive;
-        }
-
-        /* Define the color palette using CSS variables */
-        :root {
-            --brand-yellow: #FFC107; /* Turmeric Yellow */
-            --brand-red: #D32F2F;    /* Chilli Red */
-            --brand-green: #388E3C;  /* Curry Leaf Green */
-            --brand-brown: #5D4037;  /* Tamarind Brown */
-            --brand-light: #FFF8E1;  /* Coconut Milk White */
-        }
-        
-        /* Custom styles for UI elements */
-        .btn-primary {
-            background-color: var(--brand-red);
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-primary:hover {
-            background-color: #B71C1C;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--brand-red);
-            transition: width 0.3s ease-in-out;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* Background pattern inspired by Kolam art */
-        .kolam-bg {
-            background-image:
-                radial-gradient(circle at center, rgba(0,0,0,0.04) 1px, transparent 1px),
-                radial-gradient(circle at center, rgba(0,0,0,0.04) 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-        }
-
-        /* Animation classes for scroll-triggered events */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .book-cover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .book-cover:hover {
-            transform: scale(1.05) rotate(1deg);
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Floating spices animation */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-            100% { transform: translateY(0px) rotate(360deg); }
-        }
-        
-        .spice {
-            position: absolute;
-            font-size: 1.5rem;
-            opacity: 0.2;
-            animation: float 15s ease-in-out infinite;
-        }
-
-        /* Chatbot Styles */
-        .chatbot-launcher {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: var(--brand-red);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        .chatbot-launcher:hover {
-            transform: scale(1.1);
-        }
-
-        .chatbot-window {
-            position: fixed;
-            bottom: 7rem;
-            right: 2rem;
-            width: 370px;
-            max-width: 90vw;
-            height: 500px;
-            max-height: 80vh;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.5);
-            opacity: 0;
-            transform-origin: bottom right;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            z-index: 999;
-        }
-
-        .chatbot-window.open {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .chat-header {
-            background-color: var(--brand-brown);
-            color: var(--brand-light);
-            padding: 1rem;
-            font-family: 'Arima', cursive;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-
-        .chat-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .message {
-            padding: 0.5rem 1rem;
-            border-radius: 18px;
-            max-width: 80%;
-            line-height: 1.4;
-        }
-
-        .message.bot {
-            background-color: #f1f0f0;
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .message.user {
-            background-color: var(--brand-red);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-        
-        .message.typing {
-            color: #999;
-            font-style: italic;
-        }
-
-        .chat-input-form {
-            display: flex;
-            border-top: 1px solid #e0e0e0;
-            padding: 0.5rem;
-        }
-        
-        .chat-input {
-            flex-grow: 1;
-            border: none;
-            padding: 0.75rem;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .send-btn {
-            background: none;
-            border: none;
-            color: var(--brand-red);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0 0.5rem;
-        }
-        
-        .star-rating {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #ccc;
-            transition: color 0.2s;
-        }
-
-        .star:hover, .star.selected {
-            color: var(--brand-yellow);
-        }
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calorie Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="kolam-bg">
-
-    <!-- ... existing body content ... -->
-    <!-- Floating Spice Emojis for decoration -->
-    <div class="spice" style="top: 15%; left: 5%; animation-duration: 12s;">🌶️</div>
-    <div class="spice" style="top: 25%; right: 10%; animation-duration: 18s;">🌿</div>
-    <div class="spice" style="top: 60%; left: 12%; animation-duration: 20s;">🍂</div>
-    <div class="spice" style="top: 80%; right: 5%; animation-duration: 14s;">🌶️</div>
-    <div class="spice" style="top: 90%; left: 20%; animation-duration: 16s;">🌿</div>
-
-    <!-- Header and Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <h1 class="text-4xl font-bold text-brand-brown">Juggernaut</h1>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#featured" class="nav-link text-lg font-semibold">New Releases</a>
-                    <a href="#spotlight" class="nav-link text-lg font-semibold">Author Spotlight</a>
-                    <a href="#spice-box" class="nav-link text-lg font-semibold">The Spice Box</a>
-                    <a href="#" class="btn-primary rounded-full px-6 py-2">Subscribe</a>
-                </nav>
-                <div class="md:hidden">
-                    <button class="text-3xl text-brand-brown">☰</button>
-                </div>
-            </div>
-        </div>
+<body class="bg-slate-100 text-slate-900 min-h-screen">
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold">Calorie Tracker</h1>
+      <p class="text-slate-600 mt-2">Log meals, track calories and macros, and stay on target each day.</p>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="min-h-screen flex items-center pt-24 pb-12">
-            <div class="container mx-auto px-6 text-center">
-                <div class="max-w-3xl mx-auto">
-                    <h2 class="text-6xl md:text-8xl font-bold leading-tight animate-on-scroll">Stories Steeped in Flavour.</h2>
-                    <p class="mt-6 text-xl md:text-2xl text-gray-700 animate-on-scroll" style="transition-delay: 200ms;">
-                        Discover a vibrant collection of tales from the heart of South India. Rich, authentic, and unforgettable.
-                    </p>
-                    <div class="mt-10 animate-on-scroll" style="transition-delay: 400ms;">
-                        <a href="#featured" class="btn-primary rounded-full px-10 py-4 text-xl font-bold">Explore Our Library</a>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <section class="grid md:grid-cols-3 gap-4 mb-8" id="summaryCards"></section>
 
-        <!-- Featured Books Section -->
-        <section id="featured" class="py-20 bg-white shadow-inner">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-5xl font-bold animate-on-scroll">Fresh Off the Press</h2>
-                    <p class="text-xl mt-2 text-gray-600 animate-on-scroll" style="transition-delay: 150ms;">This month's most talked-about releases.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-                    <!-- Book 1 -->
-                    <div class="text-center animate-on-scroll">
-                        <img src="https://placehold.co/400x600/D32F2F/FFFFFF?text=The+Monsoon\nMurders" alt="Book Cover: The Monsoon Murders" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">The Monsoon Murders</h3>
-                        <p class="text-gray-600">by Priya Krishnan</p>
-                    </div>
-                    <!-- Book 2 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 150ms;">
-                        <img src="https://placehold.co/400x600/388E3C/FFFFFF?text=Filter+Coffee\n&+Philosophy" alt="Book Cover: Filter Coffee & Philosophy" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Filter Coffee & Philosophy</h3>
-                        <p class="text-gray-600">by Arjun Menon</p>
-                    </div>
-                    <!-- Book 3 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 300ms;">
-                        <img src="https://placehold.co/400x600/5D4037/FFFFFF?text=Gopuram+of\nSecrets" alt="Book Cover: Gopuram of Secrets" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Gopuram of Secrets</h3>
-                        <p class="text-gray-600">by Lakshmi Iyer</p>
-                    </div>
-                    <!-- Book 4 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 450ms;">
-                        <img src="https://placehold.co/400x600/FFC107/4A2E2A?text=Idli,+Dosa\n&+Destiny" alt="Book Cover: Idli, Dosa & Destiny" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Idli, Dosa & Destiny</h3>
-                        <p class="text-gray-600">by Karthik Rao</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Author Spotlight Section -->
-        <section id="spotlight" class="py-20">
-            <div class="container mx-auto px-6">
-                 <div class="flex flex-col md:flex-row items-center gap-12">
-                     <div class="md:w-1/3 animate-on-scroll">
-                         <img src="https://placehold.co/500x500/5D4037/FFFFFF?text=Author" alt="Portrait of Author Priya Krishnan" class="rounded-full shadow-2xl mx-auto">
-                     </div>
-                     <div class="md:w-2/3 text-center md:text-left">
-                         <h4 class="text-2xl text-brand-red font-bold animate-on-scroll">Author Spotlight</h4>
-                         <h2 class="text-5xl font-bold mt-2 animate-on-scroll" style="transition-delay: 150ms;">Priya Krishnan</h2>
-                         <p class="mt-6 text-xl text-gray-700 leading-relaxed animate-on-scroll" style="transition-delay: 300ms;">
-                            "I don't just write stories; I try to bottle the scent of wet earth after the first monsoon rain, the taste of my grandmother's rasam, the sound of temple bells at dawn. My characters live and breathe the air of the Western Ghats, their conflicts as old as the mountains themselves. For me, every plot is a journey back home."
-                         </p>
-                         <div class="mt-8 animate-on-scroll" style="transition-delay: 450ms;">
-                            <a href="#" class="btn-primary rounded-full px-8 py-3 text-lg font-semibold">Read Her Story</a>
-                         </div>
-                     </div>
-                 </div>
-            </div>
-        </section>
-
-        <!-- The Spice Box - Blog Section -->
-        <section id="spice-box" class="py-20 bg-white shadow-inner">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-5xl font-bold animate-on-scroll">From The Spice Box</h2>
-                    <p class="text-xl mt-2 text-gray-600 animate-on-scroll" style="transition-delay: 150ms;">Short reads, essays, and cultural musings.</p>
-                </div>
-                <div class="max-w-4xl mx-auto space-y-12">
-                    <!-- Article 1 -->
-                    <div class="animate-on-scroll">
-                        <h3 class="text-3xl font-bold">The Art of the 'Tiffin'</h3>
-                        <p class="mt-2 text-lg text-gray-700">Exploring the culinary and cultural significance of South India's light meals.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                     <!-- Article 2 -->
-                    <div class="animate-on-scroll" style="transition-delay: 200ms;">
-                        <h3 class="text-3xl font-bold">Beyond the Screen: The Kollywood Literary Connection</h3>
-                        <p class="mt-2 text-lg text-gray-700">How Tamil cinema has been shaped by and has shaped the region's literature.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                     <!-- Article 3 -->
-                    <div class="animate-on-scroll" style="transition-delay: 400ms;">
-                        <h3 class="text-3xl font-bold">Decoding the Carnatic Raga</h3>
-                        <p class="mt-2 text-lg text-gray-700">An introduction to the melodic frameworks that form the soul of South Indian classical music.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Chatbot Feature -->
-    <div id="chatbot-launcher" class="chatbot-launcher">
-        <span>💬</span>
-    </div>
-
-    <div id="chatbot-window" class="chatbot-window">
-        <div class="chat-header">Leave a Review</div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <form id="chat-input-form" class="chat-input-form">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." autocomplete="off">
-            <button type="submit" class="send-btn">➤</button>
+    <section class="grid lg:grid-cols-2 gap-8">
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+        <h2 class="text-xl font-semibold mb-4">Daily Goal</h2>
+        <form id="goalForm" class="space-y-4">
+          <div>
+            <label for="dailyGoal" class="block text-sm font-medium mb-1">Calories per day</label>
+            <input id="dailyGoal" type="number" min="0" step="1" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" placeholder="e.g. 2200" required />
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 transition">Save Goal</button>
         </form>
-    </div>
 
-
-    <!-- Footer -->
-    <footer class="bg-brand-brown text-brand-light py-12">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold">Juggernaut</h2>
-            <div class="flex justify-center space-x-6 my-6">
-                <a href="#" class="hover:text-brand-yellow transition-colors">About Us</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Careers</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Contact</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Privacy Policy</a>
-            </div>
-            <p>&copy; 2024 Juggernaut Publishing. All Rights Reserved.</p>
+        <div class="mt-6">
+          <h3 class="font-semibold mb-2">Progress</h3>
+          <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden">
+            <div id="progressBar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <p id="progressText" class="text-sm text-slate-600 mt-2">0% of goal reached</p>
         </div>
-    </footer>
+      </div>
 
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+        <h2 class="text-xl font-semibold mb-4">Add Meal</h2>
+        <form id="mealForm" class="grid grid-cols-2 gap-4">
+          <div class="col-span-2">
+            <label for="mealName" class="block text-sm font-medium mb-1">Meal name</label>
+            <input id="mealName" type="text" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" placeholder="Chicken salad" required />
+          </div>
+          <div>
+            <label for="mealCalories" class="block text-sm font-medium mb-1">Calories</label>
+            <input id="mealCalories" type="number" min="0" step="1" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" required />
+          </div>
+          <div>
+            <label for="mealProtein" class="block text-sm font-medium mb-1">Protein (g)</label>
+            <input id="mealProtein" type="number" min="0" step="0.1" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" value="0" />
+          </div>
+          <div>
+            <label for="mealCarbs" class="block text-sm font-medium mb-1">Carbs (g)</label>
+            <input id="mealCarbs" type="number" min="0" step="0.1" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" value="0" />
+          </div>
+          <div>
+            <label for="mealFat" class="block text-sm font-medium mb-1">Fat (g)</label>
+            <input id="mealFat" type="number" min="0" step="0.1" class="w-full rounded-lg border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" value="0" />
+          </div>
+          <button type="submit" class="col-span-2 bg-emerald-600 text-white py-2.5 rounded-lg hover:bg-emerald-700 transition">Add Meal</button>
+        </form>
+      </div>
+    </section>
 
-    <script>
-        // JavaScript for animations and interactions
+    <section class="mt-8 bg-white rounded-xl shadow-sm p-6 border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Meal Log</h2>
+        <button id="clearAll" class="text-sm text-red-600 hover:text-red-700">Clear all</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left border-b">
+              <th class="py-2 pr-4">Meal</th>
+              <th class="py-2 pr-4">Calories</th>
+              <th class="py-2 pr-4">Protein</th>
+              <th class="py-2 pr-4">Carbs</th>
+              <th class="py-2 pr-4">Fat</th>
+              <th class="py-2 pr-4">Action</th>
+            </tr>
+          </thead>
+          <tbody id="mealTableBody"></tbody>
+        </table>
+      </div>
+      <p id="emptyState" class="text-slate-500 py-6">No meals logged yet. Add your first meal above.</p>
+    </section>
+  </main>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // 1. Navbar background change on scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('bg-white', 'shadow-md');
-                } else {
-                    navbar.classList.remove('bg-white', 'shadow-md');
-                }
-            });
+  <script>
+    const STORAGE_KEY = 'calorie_tracker_data_v1';
 
-            // 2. Animate elements on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
+    const state = {
+      goal: 2000,
+      meals: []
+    };
 
-            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-            elementsToAnimate.forEach(el => {
-                observer.observe(el);
-            });
-            
-            // 3. Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-                    if (href && href.length > 1) {
-                        e.preventDefault();
-                        const targetElement = document.querySelector(href);
-                        if (targetElement) {
-                           targetElement.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-            });
+    const goalForm = document.getElementById('goalForm');
+    const mealForm = document.getElementById('mealForm');
+    const dailyGoalInput = document.getElementById('dailyGoal');
+    const mealTableBody = document.getElementById('mealTableBody');
+    const emptyState = document.getElementById('emptyState');
+    const clearAllBtn = document.getElementById('clearAll');
+    const summaryCards = document.getElementById('summaryCards');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
 
-            // 4. Chatbot Logic
-            const chatbotLauncher = document.getElementById('chatbot-launcher');
-            const chatbotWindow = document.getElementById('chatbot-window');
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInputForm = document.getElementById('chat-input-form');
-            const chatInput = document.getElementById('chat-input');
-            
-            let chatState = 'initial';
-            let reviewData = {};
-            let isChatOpen = false;
+    function loadState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      try {
+        const parsed = JSON.parse(saved);
+        if (typeof parsed.goal === 'number' && parsed.goal > 0) {
+          state.goal = parsed.goal;
+        }
+        if (Array.isArray(parsed.meals)) {
+          state.meals = parsed.meals;
+        }
+      } catch {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
 
-            chatbotLauncher.addEventListener('click', () => {
-                isChatOpen = !isChatOpen;
-                chatbotWindow.classList.toggle('open');
-                if (isChatOpen && chatState === 'initial') {
-                    startChat();
-                }
-            });
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
 
-            const startChat = () => {
-                addBotMessage("Hi there! I can help you leave a review for one of our books.");
-                setTimeout(() => addBotMessage("What's your name?"), 1000);
-                chatState = 'awaiting_name';
-            };
+    function totals() {
+      return state.meals.reduce((acc, meal) => {
+        acc.calories += Number(meal.calories) || 0;
+        acc.protein += Number(meal.protein) || 0;
+        acc.carbs += Number(meal.carbs) || 0;
+        acc.fat += Number(meal.fat) || 0;
+        return acc;
+      }, { calories: 0, protein: 0, carbs: 0, fat: 0 });
+    }
 
-            chatInputForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const userInput = chatInput.value.trim();
-                if (userInput) {
-                    addUserMessage(userInput);
-                    handleUserInput(userInput);
-                    chatInput.value = '';
-                }
-            });
+    function card(title, value, subtitle) {
+      return `
+        <article class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+          <p class="text-sm text-slate-500">${title}</p>
+          <p class="text-2xl font-bold mt-1">${value}</p>
+          <p class="text-xs text-slate-500 mt-1">${subtitle}</p>
+        </article>
+      `;
+    }
 
-            function handleUserInput(input) {
-                switch (chatState) {
-                    case 'awaiting_name':
-                        reviewData.name = input;
-                        botResponse("Thanks, " + reviewData.name + "! Which book would you like to review?");
-                        chatState = 'awaiting_book';
-                        break;
-                    case 'awaiting_book':
-                        reviewData.book = input;
-                        botResponse("Great! How would you rate '" + reviewData.book + "'? Please give a rating from 1 to 5 stars.");
-                        addStarRating();
-                        chatState = 'awaiting_rating';
-                        break;
-                    case 'awaiting_rating':
-                        // This case is handled by the star click event
-                        break;
-                    case 'awaiting_review':
-                        reviewData.review = input;
-                        botResponse("Thank you for your feedback! Your review has been submitted.");
-                        setTimeout(() => botResponse("Is there anything else I can help with today?"), 1200);
-                        chatState = 'finished';
-                        break;
-                    default:
-                        botResponse("I'm sorry, I'm just here to collect reviews. Thanks for chatting!");
-                }
-            }
-            
-            function addStarRating() {
-                const ratingContainer = document.createElement('div');
-                ratingContainer.className = 'message bot star-rating';
-                for (let i = 1; i <= 5; i++) {
-                    const star = document.createElement('span');
-                    star.className = 'star';
-                    star.textContent = '☆';
-                    star.dataset.value = i;
-                    star.addEventListener('mouseover', e => highlightStars(e.target.dataset.value));
-                    star.addEventListener('mouseout', () => highlightStars(reviewData.rating || 0));
-                    star.addEventListener('click', e => {
-                        reviewData.rating = e.target.dataset.value;
-                        highlightStars(reviewData.rating);
-                        chatMessages.removeChild(ratingContainer);
-                        addUserMessage(reviewData.rating + ' stars');
-                        botResponse("Got it. Lastly, what did you think of the book?");
-                        chatState = 'awaiting_review';
-                    });
-                    ratingContainer.appendChild(star);
-                }
-                chatMessages.appendChild(ratingContainer);
-                scrollToBottom();
-            }
-            
-            function highlightStars(rating) {
-                document.querySelectorAll('.star').forEach(star => {
-                    star.classList.toggle('selected', star.dataset.value <= rating);
-                    star.textContent = star.dataset.value <= rating ? '★' : '☆';
-                });
-            }
+    function renderSummary() {
+      const { calories, protein, carbs, fat } = totals();
+      const remaining = Math.max(state.goal - calories, 0);
+      summaryCards.innerHTML =
+        card('Calories eaten', `${calories.toFixed(0)} kcal`, 'Today') +
+        card('Calories remaining', `${remaining.toFixed(0)} kcal`, `Goal: ${state.goal} kcal`) +
+        card('Macros', `P ${protein.toFixed(1)}g · C ${carbs.toFixed(1)}g · F ${fat.toFixed(1)}g`, 'Protein · Carbs · Fat');
 
-            function botResponse(message) {
-                const typingIndicator = addBotMessage("...", true);
-                setTimeout(() => {
-                    typingIndicator.textContent = message;
-                }, 1000 + Math.random() * 500);
-            }
+      const progress = state.goal > 0 ? Math.min((calories / state.goal) * 100, 100) : 0;
+      progressBar.style.width = `${progress}%`;
+      progressBar.className = `h-full transition-all duration-300 ${progress > 100 ? 'bg-red-500' : progress >= 80 ? 'bg-amber-500' : 'bg-emerald-500'}`;
+      progressText.textContent = `${(state.goal > 0 ? (calories / state.goal) * 100 : 0).toFixed(1)}% of goal reached`;
+    }
 
-            function addUserMessage(message) {
-                const messageEl = document.createElement('div');
-                messageEl.className = 'message user';
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                scrollToBottom();
-            }
+    function renderMeals() {
+      mealTableBody.innerHTML = state.meals.map((meal, index) => `
+        <tr class="border-b last:border-none">
+          <td class="py-2 pr-4 font-medium">${meal.name}</td>
+          <td class="py-2 pr-4">${Number(meal.calories).toFixed(0)} kcal</td>
+          <td class="py-2 pr-4">${Number(meal.protein).toFixed(1)} g</td>
+          <td class="py-2 pr-4">${Number(meal.carbs).toFixed(1)} g</td>
+          <td class="py-2 pr-4">${Number(meal.fat).toFixed(1)} g</td>
+          <td class="py-2 pr-4">
+            <button type="button" data-index="${index}" class="text-red-600 hover:text-red-700">Delete</button>
+          </td>
+        </tr>
+      `).join('');
 
-            function addBotMessage(message, isTyping = false) {
-                const messageEl = document.createElement('div');
-                messageEl.className = 'message bot';
-                if (isTyping) {
-                    messageEl.classList.add('typing');
-                }
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                scrollToBottom();
-                return messageEl;
-            }
+      emptyState.style.display = state.meals.length ? 'none' : 'block';
 
-            function scrollToBottom() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
+      mealTableBody.querySelectorAll('button[data-index]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const index = Number(btn.dataset.index);
+          state.meals.splice(index, 1);
+          saveState();
+          render();
         });
-    </script>
+      });
+    }
+
+    function render() {
+      dailyGoalInput.value = state.goal;
+      renderSummary();
+      renderMeals();
+    }
+
+    goalForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const goal = Number(dailyGoalInput.value);
+      if (!Number.isFinite(goal) || goal <= 0) return;
+      state.goal = goal;
+      saveState();
+      render();
+    });
+
+    mealForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const meal = {
+        name: document.getElementById('mealName').value.trim(),
+        calories: Number(document.getElementById('mealCalories').value),
+        protein: Number(document.getElementById('mealProtein').value || 0),
+        carbs: Number(document.getElementById('mealCarbs').value || 0),
+        fat: Number(document.getElementById('mealFat').value || 0)
+      };
+
+      if (!meal.name || !Number.isFinite(meal.calories) || meal.calories < 0) return;
+
+      state.meals.unshift(meal);
+      saveState();
+      mealForm.reset();
+      document.getElementById('mealProtein').value = 0;
+      document.getElementById('mealCarbs').value = 0;
+      document.getElementById('mealFat').value = 0;
+      render();
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      state.meals = [];
+      saveState();
+      render();
+    });
+
+    loadState();
+    render();
+  </script>
 </body>
 </html>
-
