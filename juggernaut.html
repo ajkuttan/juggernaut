@@ -1,579 +1,422 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juggernaut | South Indian Flavours</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Arima:wght@400;700&family=Hind+Madurai:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Define the custom font families */
-        body {
-            font-family: 'Hind Madurai', sans-serif;
-            background-color: #FFF8E1; /* A warm, parchment-like off-white */
-            color: #4A2E2A; /* Deep brown, like coffee decoction */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Kit — Web App</title>
+  <style>
+    :root {
+      --ink: #161617;
+      --muted: #737373;
+      --line: #e8e5df;
+      --panel: #fbfaf8;
+      --map: #efeadd;
+      --orange: #f15a24;
+      --blue: #b8d9f2;
+      --green: #e3ead7;
+    }
 
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Arima', cursive;
-        }
+    * { box-sizing: border-box; }
 
-        /* Define the color palette using CSS variables */
-        :root {
-            --brand-yellow: #FFC107; /* Turmeric Yellow */
-            --brand-red: #D32F2F;    /* Chilli Red */
-            --brand-green: #388E3C;  /* Curry Leaf Green */
-            --brand-brown: #5D4037;  /* Tamarind Brown */
-            --brand-light: #FFF8E1;  /* Coconut Milk White */
-        }
-        
-        /* Custom styles for UI elements */
-        .btn-primary {
-            background-color: var(--brand-red);
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-primary:hover {
-            background-color: #B71C1C;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--brand-red);
-            transition: width 0.3s ease-in-out;
-        }
-        .nav-link:hover::after {
-            width: 100%;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        /* Background pattern inspired by Kolam art */
-        .kolam-bg {
-            background-image:
-                radial-gradient(circle at center, rgba(0,0,0,0.04) 1px, transparent 1px),
-                radial-gradient(circle at center, rgba(0,0,0,0.04) 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-        }
+    .page-title {
+      height: 53px;
+      padding: 11px 18px;
+      border-bottom: 1px solid #efefef;
+      color: #4b362a;
+      font-size: 17px;
+      font-weight: 500;
+      letter-spacing: .01em;
+    }
 
-        /* Animation classes for scroll-triggered events */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
+    .review-card {
+      width: calc(100% - 28px);
+      margin: 0 auto;
+      border: 1px solid #d9d9d9;
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 1px 5px rgb(0 0 0 / 7%);
+      overflow: hidden;
+      background: white;
+    }
 
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .book-cover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .book-cover:hover {
-            transform: scale(1.05) rotate(1deg);
-            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
-        }
+    .review-bar {
+      height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 23px 0 30px;
+      background: #fbfbfb;
+      border-bottom: 1px solid #e5e5e5;
+    }
 
-        /* Floating spices animation */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-            100% { transform: translateY(0px) rotate(360deg); }
-        }
-        
-        .spice {
-            position: absolute;
-            font-size: 1.5rem;
-            opacity: 0.2;
-            animation: float 15s ease-in-out infinite;
-        }
+    .review-info { display: flex; align-items: center; gap: 18px; }
+    .chevron { color: #6b6b6b; font-size: 20px; transform: translateY(-5px); }
 
-        /* Chatbot Styles */
-        .chatbot-launcher {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: var(--brand-red);
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        .chatbot-launcher:hover {
-            transform: scale(1.1);
-        }
+    .review-title {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
 
-        .chatbot-window {
-            position: fixed;
-            bottom: 7rem;
-            right: 2rem;
-            width: 370px;
-            max-width: 90vw;
-            height: 500px;
-            max-height: 80vh;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transform: scale(0.5);
-            opacity: 0;
-            transform-origin: bottom right;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-            z-index: 999;
-        }
+    .review-subtitle {
+      color: #817c78;
+      font-size: 16px;
+      line-height: 1;
+    }
 
-        .chatbot-window.open {
-            transform: scale(1);
-            opacity: 1;
-        }
+    .review-actions { display: flex; gap: 14px; }
 
-        .chat-header {
-            background-color: var(--brand-brown);
-            color: var(--brand-light);
-            padding: 1rem;
-            font-family: 'Arima', cursive;
-            font-size: 1.5rem;
-            text-align: center;
-        }
+    .action-button {
+      height: 39px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 8px;
+      padding: 0 20px;
+      background: white;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 1px 6px rgb(0 0 0 / 11%);
+    }
 
-        .chat-messages {
-            flex-grow: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .message {
-            padding: 0.5rem 1rem;
-            border-radius: 18px;
-            max-width: 80%;
-            line-height: 1.4;
-        }
+    .action-button.good { border: 1px solid #a5cb48; color: #477400; }
+    .action-button.bad { border: 1px solid #ff9aa0; color: #cf2028; }
+    .action-button svg { width: 18px; height: 18px; stroke-width: 1.8; }
 
-        .message.bot {
-            background-color: #f1f0f0;
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
+    .app-shell {
+      height: calc(100vh - 163px);
+      min-height: 720px;
+      position: relative;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      background: #f8f5ec;
+      overflow: hidden;
+    }
 
-        .message.user {
-            background-color: var(--brand-red);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-        }
-        
-        .message.typing {
-            color: #999;
-            font-style: italic;
-        }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      background: #fbfaf7;
+      border-bottom: 1px solid #ebe5dc;
+      font-size: 12px;
+      letter-spacing: .02em;
+    }
 
-        .chat-input-form {
-            display: flex;
-            border-top: 1px solid #e0e0e0;
-            padding: 0.5rem;
-        }
-        
-        .chat-input {
-            flex-grow: 1;
-            border: none;
-            padding: 0.75rem;
-            font-size: 1rem;
-            outline: none;
-        }
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; }
+    .brand-dot {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #ff7b32 0 21%, #0d0d0e 23% 100%);
+    }
+    .workspace { color: #545454; margin-left: 24px; font-size: 9px; font-weight: 800; }
+    .dispatch { color: #1e1e1e; margin-left: 9px; font-size: 9px; font-weight: 800; }
+    .plus { color: #777; margin-left: 5px; }
+    .top-icons { display: flex; align-items: center; gap: 26px; color: #242424; }
+    .top-icons svg { width: 16px; height: 16px; stroke-width: 2; }
+    .avatar { width: 24px; height: 24px; border-radius: 50%; background: #111827; color: white; display: grid; place-items: center; font-size: 9px; font-weight: 800; }
 
-        .send-btn {
-            background: none;
-            border: none;
-            color: var(--brand-red);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0 0.5rem;
-        }
-        
-        .star-rating {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 10px;
-        }
+    .content { position: relative; display: grid; grid-template-columns: 385px 1fr; min-height: 0; }
 
-        .star {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #ccc;
-            transition: color 0.2s;
-        }
+    .sidebar {
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      background: #fbfaf5;
+      border-right: 1px solid #e5dfd6;
+    }
 
-        .star:hover, .star.selected {
-            color: var(--brand-yellow);
-        }
+    .sidebar-header {
+      height: 74px;
+      padding: 16px 24px 0;
+      border-bottom: 1px solid #eae4dc;
+      position: relative;
+    }
+    .sidebar-header strong { display: block; font-size: 11px; line-height: 1.2; }
+    .sidebar-header span { display: block; margin-top: 8px; color: #837d75; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+    .add { position: absolute; right: 27px; top: 21px; font-size: 17px; color: #3a3937; }
 
-    </style>
+    .prompt { padding: 28px 24px 0; }
+    .eyebrow { color: var(--orange); font-size: 11px; font-weight: 900; letter-spacing: .12em; margin-bottom: 10px; }
+    h1 { margin: 0; max-width: 270px; font-size: 24px; line-height: .96; letter-spacing: -0.06em; }
+    .helper { margin: 13px 0 26px; color: #757575; font-size: 10px; font-weight: 700; }
+    .try { color: #777; font-size: 9px; font-weight: 900; letter-spacing: .16em; margin-bottom: 11px; }
+
+    .query-list { display: grid; gap: 12px; }
+    .query {
+      height: 39px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border: 1px solid #e8e5df;
+      border-radius: 8px;
+      background: white;
+      font-size: 11px;
+      box-shadow: 0 1px 0 rgb(0 0 0 / 3%);
+    }
+    .query span:last-child { color: #a0a0a0; font-size: 18px; }
+
+    .composer {
+      margin-top: auto;
+      padding: 0 24px 18px;
+    }
+    .input-row {
+      height: 47px;
+      display: grid;
+      grid-template-columns: 26px 1fr 31px;
+      align-items: center;
+      gap: 9px;
+      padding: 0 8px 0 12px;
+      border: 1px solid #e5e0d9;
+      border-radius: 8px;
+      background: white;
+    }
+    .paperclip { color: #9b9b9b; font-size: 19px; transform: rotate(-20deg); }
+    .placeholder { color: #747474; font-size: 11px; }
+    .send { width: 31px; height: 31px; border-radius: 50%; border: 0; background: #eef0eb; color: #a6aaa2; font-size: 16px; }
+    .notes { display: flex; gap: 18px; margin-top: 11px; color: #98958e; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; }
+    .notes b { color: #77746e; font-weight: 800; }
+
+    .map {
+      position: relative;
+      overflow: hidden;
+      background-color: var(--map);
+      background-image:
+        linear-gradient(0deg, rgb(215 204 185 / 40%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(215 204 185 / 35%) 1px, transparent 1px),
+        repeating-radial-gradient(ellipse at 76% 18%, transparent 0 47px, rgb(211 199 178 / 28%) 48px 50px);
+      background-size: 265px 210px, 265px 210px, 100% 100%;
+    }
+
+    .map::before, .map::after {
+      content: "";
+      position: absolute;
+      inset: 210px -80px auto -40px;
+      height: 12px;
+      background: white;
+      border-top: 2px solid #ded8cb;
+      border-bottom: 2px solid #ded8cb;
+      transform: rotate(.9deg);
+      box-shadow: 0 208px 0 white, 0 210px 0 #ded8cb, 0 206px 0 #ded8cb;
+    }
+    .map::after {
+      inset: -30px auto -30px 528px;
+      width: 12px;
+      height: auto;
+      border: 0;
+      transform: none;
+      box-shadow: none;
+      background: white;
+      border-left: 2px solid #ded8cb;
+      border-right: 2px solid #ded8cb;
+    }
+
+    .route {
+      position: absolute;
+      left: -40px;
+      right: -50px;
+      top: 582px;
+      height: 9px;
+      background: white;
+      border-top: 2px solid #ded8cb;
+      border-bottom: 2px solid #ded8cb;
+      transform: rotate(-7deg);
+      z-index: 1;
+    }
+    .water {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 158px;
+      background: var(--blue);
+      clip-path: polygon(0 0, 20% 0, 33% 18%, 50% 23%, 68% 16%, 84% 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .park { position: absolute; background: var(--green); opacity: .78; }
+    .park.one { width: 245px; height: 190px; left: -66px; top: 77px; border-radius: 54% 43% 48% 59%; transform: rotate(14deg); }
+    .park.two { width: 290px; height: 152px; right: -76px; bottom: 175px; border-radius: 46% 52% 39% 54%; transform: rotate(4deg); }
+    .label { position: absolute; color: #6f7b6c; font-size: 9px; font-weight: 700; z-index: 2; }
+    .riverside { left: 2px; top: 177px; }
+    .eastline { right: 89px; bottom: 231px; }
+    .interstate { left: 565px; top: 374px; color: #777c86; }
+
+    .live-pill {
+      position: absolute;
+      top: 29px;
+      left: 43%;
+      transform: translateX(-50%);
+      height: 23px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 13px;
+      border: 1px solid #e6e1d8;
+      border-radius: 999px;
+      background: rgb(255 255 255 / 72%);
+      box-shadow: 0 1px 5px rgb(0 0 0 / 5%);
+      color: #6a6a6a;
+      font-size: 9px;
+      font-weight: 800;
+      z-index: 2;
+    }
+    .red-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff6047; box-shadow: 0 0 0 4px rgb(255 96 71 / 12%); }
+
+    .legend {
+      position: absolute;
+      left: 22px;
+      bottom: 18px;
+      width: 205px;
+      height: 96px;
+      padding: 14px 17px;
+      background: rgb(255 255 255 / 86%);
+      border: 1px solid #e5e1db;
+      border-radius: 7px;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+      z-index: 4;
+    }
+    .legend-title { color: #8b8b8b; font-size: 8px; font-weight: 900; letter-spacing: .12em; margin-bottom: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin: 6px 0; color: #656565; font-size: 9px; font-weight: 800; }
+    .swatch { width: 18px; height: 4px; border-radius: 3px; }
+    .purple { background: #7d6cff; } .orange { background: #ff9d24; } .slate { background: #8b9bad; }
+
+    .map-tools {
+      position: absolute;
+      right: 17px;
+      bottom: 18px;
+      width: 40px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #101418;
+      color: #cbd2d8;
+      box-shadow: 0 2px 7px rgb(0 0 0 / 30%);
+      z-index: 6;
+    }
+    .truck {
+      height: 39px;
+      display: grid;
+      place-items: center;
+      background: #f45113;
+      color: white;
+      font-size: 17px;
+    }
+    .tool { height: 32px; display: grid; place-items: center; border-top: 1px solid rgb(255 255 255 / 11%); font-size: 16px; }
+    .tool.small { font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .review-bar { height: auto; align-items: flex-start; gap: 16px; flex-direction: column; padding: 20px; }
+      .content { grid-template-columns: 320px 1fr; }
+      .review-actions { width: 100%; justify-content: flex-end; }
+      .app-shell { height: 760px; }
+    }
+  </style>
 </head>
-<body class="kolam-bg">
-
-    <!-- ... existing body content ... -->
-    <!-- Floating Spice Emojis for decoration -->
-    <div class="spice" style="top: 15%; left: 5%; animation-duration: 12s;">🌶️</div>
-    <div class="spice" style="top: 25%; right: 10%; animation-duration: 18s;">🌿</div>
-    <div class="spice" style="top: 60%; left: 12%; animation-duration: 20s;">🍂</div>
-    <div class="spice" style="top: 80%; right: 5%; animation-duration: 14s;">🌶️</div>
-    <div class="spice" style="top: 90%; left: 20%; animation-duration: 16s;">🌿</div>
-
-    <!-- Header and Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <h1 class="text-4xl font-bold text-brand-brown">Juggernaut</h1>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#featured" class="nav-link text-lg font-semibold">New Releases</a>
-                    <a href="#spotlight" class="nav-link text-lg font-semibold">Author Spotlight</a>
-                    <a href="#spice-box" class="nav-link text-lg font-semibold">The Spice Box</a>
-                    <a href="#" class="btn-primary rounded-full px-6 py-2">Subscribe</a>
-                </nav>
-                <div class="md:hidden">
-                    <button class="text-3xl text-brand-brown">☰</button>
-                </div>
-            </div>
+<body>
+  <div class="page-title">UI Kit — Web App</div>
+  <main class="review-card" aria-label="Web app mockup review">
+    <section class="review-bar">
+      <div class="review-info">
+        <div class="chevron">⌄</div>
+        <div>
+          <div class="review-title">Web App — Chat + Map</div>
+          <div class="review-subtitle">Empty state with suggested queries, live map</div>
         </div>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="min-h-screen flex items-center pt-24 pb-12">
-            <div class="container mx-auto px-6 text-center">
-                <div class="max-w-3xl mx-auto">
-                    <h2 class="text-6xl md:text-8xl font-bold leading-tight animate-on-scroll">Stories Steeped in Flavour.</h2>
-                    <p class="mt-6 text-xl md:text-2xl text-gray-700 animate-on-scroll" style="transition-delay: 200ms;">
-                        Discover a vibrant collection of tales from the heart of South India. Rich, authentic, and unforgettable.
-                    </p>
-                    <div class="mt-10 animate-on-scroll" style="transition-delay: 400ms;">
-                        <a href="#featured" class="btn-primary rounded-full px-10 py-4 text-xl font-bold">Explore Our Library</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Books Section -->
-        <section id="featured" class="py-20 bg-white shadow-inner">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-5xl font-bold animate-on-scroll">Fresh Off the Press</h2>
-                    <p class="text-xl mt-2 text-gray-600 animate-on-scroll" style="transition-delay: 150ms;">This month's most talked-about releases.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-                    <!-- Book 1 -->
-                    <div class="text-center animate-on-scroll">
-                        <img src="https://placehold.co/400x600/D32F2F/FFFFFF?text=The+Monsoon\nMurders" alt="Book Cover: The Monsoon Murders" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">The Monsoon Murders</h3>
-                        <p class="text-gray-600">by Priya Krishnan</p>
-                    </div>
-                    <!-- Book 2 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 150ms;">
-                        <img src="https://placehold.co/400x600/388E3C/FFFFFF?text=Filter+Coffee\n&+Philosophy" alt="Book Cover: Filter Coffee & Philosophy" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Filter Coffee & Philosophy</h3>
-                        <p class="text-gray-600">by Arjun Menon</p>
-                    </div>
-                    <!-- Book 3 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 300ms;">
-                        <img src="https://placehold.co/400x600/5D4037/FFFFFF?text=Gopuram+of\nSecrets" alt="Book Cover: Gopuram of Secrets" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Gopuram of Secrets</h3>
-                        <p class="text-gray-600">by Lakshmi Iyer</p>
-                    </div>
-                    <!-- Book 4 -->
-                    <div class="text-center animate-on-scroll" style="transition-delay: 450ms;">
-                        <img src="https://placehold.co/400x600/FFC107/4A2E2A?text=Idli,+Dosa\n&+Destiny" alt="Book Cover: Idli, Dosa & Destiny" class="book-cover rounded-lg shadow-xl mx-auto mb-4 w-full">
-                        <h3 class="text-2xl font-bold">Idli, Dosa & Destiny</h3>
-                        <p class="text-gray-600">by Karthik Rao</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Author Spotlight Section -->
-        <section id="spotlight" class="py-20">
-            <div class="container mx-auto px-6">
-                 <div class="flex flex-col md:flex-row items-center gap-12">
-                     <div class="md:w-1/3 animate-on-scroll">
-                         <img src="https://placehold.co/500x500/5D4037/FFFFFF?text=Author" alt="Portrait of Author Priya Krishnan" class="rounded-full shadow-2xl mx-auto">
-                     </div>
-                     <div class="md:w-2/3 text-center md:text-left">
-                         <h4 class="text-2xl text-brand-red font-bold animate-on-scroll">Author Spotlight</h4>
-                         <h2 class="text-5xl font-bold mt-2 animate-on-scroll" style="transition-delay: 150ms;">Priya Krishnan</h2>
-                         <p class="mt-6 text-xl text-gray-700 leading-relaxed animate-on-scroll" style="transition-delay: 300ms;">
-                            "I don't just write stories; I try to bottle the scent of wet earth after the first monsoon rain, the taste of my grandmother's rasam, the sound of temple bells at dawn. My characters live and breathe the air of the Western Ghats, their conflicts as old as the mountains themselves. For me, every plot is a journey back home."
-                         </p>
-                         <div class="mt-8 animate-on-scroll" style="transition-delay: 450ms;">
-                            <a href="#" class="btn-primary rounded-full px-8 py-3 text-lg font-semibold">Read Her Story</a>
-                         </div>
-                     </div>
-                 </div>
-            </div>
-        </section>
-
-        <!-- The Spice Box - Blog Section -->
-        <section id="spice-box" class="py-20 bg-white shadow-inner">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-5xl font-bold animate-on-scroll">From The Spice Box</h2>
-                    <p class="text-xl mt-2 text-gray-600 animate-on-scroll" style="transition-delay: 150ms;">Short reads, essays, and cultural musings.</p>
-                </div>
-                <div class="max-w-4xl mx-auto space-y-12">
-                    <!-- Article 1 -->
-                    <div class="animate-on-scroll">
-                        <h3 class="text-3xl font-bold">The Art of the 'Tiffin'</h3>
-                        <p class="mt-2 text-lg text-gray-700">Exploring the culinary and cultural significance of South India's light meals.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                     <!-- Article 2 -->
-                    <div class="animate-on-scroll" style="transition-delay: 200ms;">
-                        <h3 class="text-3xl font-bold">Beyond the Screen: The Kollywood Literary Connection</h3>
-                        <p class="mt-2 text-lg text-gray-700">How Tamil cinema has been shaped by and has shaped the region's literature.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                     <!-- Article 3 -->
-                    <div class="animate-on-scroll" style="transition-delay: 400ms;">
-                        <h3 class="text-3xl font-bold">Decoding the Carnatic Raga</h3>
-                        <p class="mt-2 text-lg text-gray-700">An introduction to the melodic frameworks that form the soul of South Indian classical music.</p>
-                        <a href="#" class="nav-link text-brand-red font-semibold mt-3 inline-block">Read More &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Chatbot Feature -->
-    <div id="chatbot-launcher" class="chatbot-launcher">
-        <span>💬</span>
-    </div>
-
-    <div id="chatbot-window" class="chatbot-window">
-        <div class="chat-header">Leave a Review</div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <form id="chat-input-form" class="chat-input-form">
-            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." autocomplete="off">
-            <button type="submit" class="send-btn">➤</button>
-        </form>
-    </div>
-
-
-    <!-- Footer -->
-    <footer class="bg-brand-brown text-brand-light py-12">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold">Juggernaut</h2>
-            <div class="flex justify-center space-x-6 my-6">
-                <a href="#" class="hover:text-brand-yellow transition-colors">About Us</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Careers</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Contact</a>
-                <a href="#" class="hover:text-brand-yellow transition-colors">Privacy Policy</a>
-            </div>
-            <p>&copy; 2024 Juggernaut Publishing. All Rights Reserved.</p>
+      </div>
+      <div class="review-actions">
+        <div class="action-button good">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 11v10H4a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h3Zm0 0 4-8 1.5 1.1c.7.5.9 1.4.6 2.2L12 10h6.7a2 2 0 0 1 2 2.3l-1.1 6.8a2 2 0 0 1-2 1.7H7"/></svg>
+          Looks good
         </div>
-    </footer>
+        <div class="action-button bad">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 13V3h3a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-3Zm0 0-4 8-1.5-1.1a2 2 0 0 1-.6-2.2L12 14H5.3a2 2 0 0 1-2-2.3l1.1-6.8a2 2 0 0 1 2-1.7H17"/></svg>
+          Needs work…
+        </div>
+      </div>
+    </section>
 
+    <section class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          Routeline
+          <span class="workspace">WORKSPACE</span>
+          <span class="dispatch">Northbrook Dispatch</span>
+          <span class="plus">＋</span>
+        </div>
+        <div class="top-icons" aria-label="App controls">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18h6M10 22h4M5 14a7 7 0 1 1 14 0c0 2-2 3-2 4H7c0-1-2-2-2-4Z"/></svg>
+          <div class="avatar">MJ</div>
+        </div>
+      </header>
 
-    <script>
-        // JavaScript for animations and interactions
+      <div class="content">
+        <aside class="sidebar">
+          <div class="sidebar-header">
+            <strong>New chat</strong>
+            <span>Started 09:14 · Tue, May 12</span>
+            <div class="add">＋</div>
+          </div>
+          <div class="prompt">
+            <div class="eyebrow">ROUTELINE</div>
+            <h1>Ask about a route, vehicle, or stop.</h1>
+            <p class="helper">Answers land here and on the map.</p>
+            <div class="try">TRY ASKING</div>
+            <div class="query-list">
+              <div class="query"><span>Which vans are within 30 min of dock 4?</span><span>→</span></div>
+              <div class="query"><span>Reroute van 12 around the I‑35 closure</span><span>→</span></div>
+              <div class="query"><span>Show today’s missed windows</span><span>→</span></div>
+            </div>
+          </div>
+          <div class="composer">
+            <div class="input-row">
+              <span class="paperclip">⌘</span>
+              <span class="placeholder">Ask about a route, vehicle, or stop</span>
+              <button class="send" aria-label="Send">➤</button>
+            </div>
+            <div class="notes">
+              <span>↵ to send · ⇧↵ for newline</span>
+              <span><b>Routeline</b> writes to the map. Verify before dispatching.</span>
+            </div>
+          </div>
+        </aside>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            
-            // 1. Navbar background change on scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('bg-white', 'shadow-md');
-                } else {
-                    navbar.classList.remove('bg-white', 'shadow-md');
-                }
-            });
-
-            // 2. Animate elements on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-
-            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-            elementsToAnimate.forEach(el => {
-                observer.observe(el);
-            });
-            
-            // 3. Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    const href = this.getAttribute('href');
-                    if (href && href.length > 1) {
-                        e.preventDefault();
-                        const targetElement = document.querySelector(href);
-                        if (targetElement) {
-                           targetElement.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                });
-            });
-
-            // 4. Chatbot Logic
-            const chatbotLauncher = document.getElementById('chatbot-launcher');
-            const chatbotWindow = document.getElementById('chatbot-window');
-            const chatMessages = document.getElementById('chat-messages');
-            const chatInputForm = document.getElementById('chat-input-form');
-            const chatInput = document.getElementById('chat-input');
-            
-            let chatState = 'initial';
-            let reviewData = {};
-            let isChatOpen = false;
-
-            chatbotLauncher.addEventListener('click', () => {
-                isChatOpen = !isChatOpen;
-                chatbotWindow.classList.toggle('open');
-                if (isChatOpen && chatState === 'initial') {
-                    startChat();
-                }
-            });
-
-            const startChat = () => {
-                addBotMessage("Hi there! I can help you leave a review for one of our books.");
-                setTimeout(() => addBotMessage("What's your name?"), 1000);
-                chatState = 'awaiting_name';
-            };
-
-            chatInputForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const userInput = chatInput.value.trim();
-                if (userInput) {
-                    addUserMessage(userInput);
-                    handleUserInput(userInput);
-                    chatInput.value = '';
-                }
-            });
-
-            function handleUserInput(input) {
-                switch (chatState) {
-                    case 'awaiting_name':
-                        reviewData.name = input;
-                        botResponse("Thanks, " + reviewData.name + "! Which book would you like to review?");
-                        chatState = 'awaiting_book';
-                        break;
-                    case 'awaiting_book':
-                        reviewData.book = input;
-                        botResponse("Great! How would you rate '" + reviewData.book + "'? Please give a rating from 1 to 5 stars.");
-                        addStarRating();
-                        chatState = 'awaiting_rating';
-                        break;
-                    case 'awaiting_rating':
-                        // This case is handled by the star click event
-                        break;
-                    case 'awaiting_review':
-                        reviewData.review = input;
-                        botResponse("Thank you for your feedback! Your review has been submitted.");
-                        setTimeout(() => botResponse("Is there anything else I can help with today?"), 1200);
-                        chatState = 'finished';
-                        break;
-                    default:
-                        botResponse("I'm sorry, I'm just here to collect reviews. Thanks for chatting!");
-                }
-            }
-            
-            function addStarRating() {
-                const ratingContainer = document.createElement('div');
-                ratingContainer.className = 'message bot star-rating';
-                for (let i = 1; i <= 5; i++) {
-                    const star = document.createElement('span');
-                    star.className = 'star';
-                    star.textContent = '☆';
-                    star.dataset.value = i;
-                    star.addEventListener('mouseover', e => highlightStars(e.target.dataset.value));
-                    star.addEventListener('mouseout', () => highlightStars(reviewData.rating || 0));
-                    star.addEventListener('click', e => {
-                        reviewData.rating = e.target.dataset.value;
-                        highlightStars(reviewData.rating);
-                        chatMessages.removeChild(ratingContainer);
-                        addUserMessage(reviewData.rating + ' stars');
-                        botResponse("Got it. Lastly, what did you think of the book?");
-                        chatState = 'awaiting_review';
-                    });
-                    ratingContainer.appendChild(star);
-                }
-                chatMessages.appendChild(ratingContainer);
-                scrollToBottom();
-            }
-            
-            function highlightStars(rating) {
-                document.querySelectorAll('.star').forEach(star => {
-                    star.classList.toggle('selected', star.dataset.value <= rating);
-                    star.textContent = star.dataset.value <= rating ? '★' : '☆';
-                });
-            }
-
-            function botResponse(message) {
-                const typingIndicator = addBotMessage("...", true);
-                setTimeout(() => {
-                    typingIndicator.textContent = message;
-                }, 1000 + Math.random() * 500);
-            }
-
-            function addUserMessage(message) {
-                const messageEl = document.createElement('div');
-                messageEl.className = 'message user';
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                scrollToBottom();
-            }
-
-            function addBotMessage(message, isTyping = false) {
-                const messageEl = document.createElement('div');
-                messageEl.className = 'message bot';
-                if (isTyping) {
-                    messageEl.classList.add('typing');
-                }
-                messageEl.textContent = message;
-                chatMessages.appendChild(messageEl);
-                scrollToBottom();
-                return messageEl;
-            }
-
-            function scrollToBottom() {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-        });
-    </script>
+        <section class="map" aria-label="Live dispatch map">
+          <div class="park one"></div>
+          <div class="park two"></div>
+          <div class="water"></div>
+          <div class="route"></div>
+          <div class="label riverside">Riverside Park</div>
+          <div class="label interstate">I-35</div>
+          <div class="label eastline">Eastline Greenway</div>
+          <div class="live-pill"><span class="red-dot"></span> Live · 12 vehicles active</div>
+          <div class="legend">
+            <div class="legend-title">LEGEND</div>
+            <div class="legend-item"><span class="swatch purple"></span> Primary route</div>
+            <div class="legend-item"><span class="swatch orange"></span> Alt route</div>
+            <div class="legend-item"><span class="swatch slate"></span> Delayed</div>
+          </div>
+          <div class="map-tools" aria-label="Map tools">
+            <div class="truck">✣</div>
+            <div class="tool small">◎</div>
+            <div class="tool">⌁</div>
+            <div class="tool">＋</div>
+            <div class="tool">−</div>
+            <div class="tool small">◉</div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
-
